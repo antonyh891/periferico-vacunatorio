@@ -189,6 +189,15 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		
 	}
 
+	@Override
+	public List<Integer> listarVacunatorios() {
+		List<Integer> listavacunatorios = new ArrayList<Integer>();
+		for (Map.Entry<String, Vacunatorio> p : vacunatorios.entrySet()) {
+			listavacunatorios.add(Integer.parseInt(p.getValue().getId()));
+		}
+		return listavacunatorios;
+	}
+
 }
 
 

@@ -25,5 +25,10 @@ public class VacunatorioServicio {
 			return("Error: "+e.getMessage());
 		}
 	}
+	
+	@WebMethod
+	public List<Integer> listarVacunatorios (){
+		return manejador.listarVacunatorios();
+	}
 
 }
