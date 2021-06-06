@@ -1,0 +1,8 @@
+entidades\Puesto_Vacunador.class
+webServiceSoap\VacunatorioServicio.class
+entidades\Puesto.class
+Manejador\ManejadorVacunatoriosLocal.class
+periferico_vac\periferico_vacunatorio\Jsf23Activator.class
+entidades\Vacunatorio.class
+entidades\Vacunador.class
+Manejador\ManejadorVacunatorios.class
