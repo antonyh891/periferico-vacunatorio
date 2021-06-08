@@ -82,7 +82,7 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 				}else if(!cedulasRebotadas.isEmpty()) {
 					mensaje= "Los siguientes vacunadores ya tienen un lugar asignado para la fecha ingresada: ";
 					mensajeVac.setMensaje(mensaje);
-					mensajeVac.setVacunadoresNoAsignados(cedulas);
+					mensajeVac.setVacunadoresNoAsignados(cedulasRebotadas);
 						}
 					
 		         else {
