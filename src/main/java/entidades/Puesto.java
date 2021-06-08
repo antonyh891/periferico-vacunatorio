@@ -1,18 +1,17 @@
 package entidades;
 
 
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
+
 import java.util.Map;
 import java.time.LocalDate;
 
 public class Puesto {
 	
-	private String id;
+	private int id;
 	private Vacunatorio vacunatorio;
-	private int numeroVacunadores;
-	private Map<LocalDate, Puesto_Vacunador> vacunadoresAsignadosPorFecha;
+	private Map<LocalDate, Puesto_Vacunador> vacunadorAsignadoPorFecha;
 	
 
 	public Puesto() {
@@ -21,35 +20,24 @@ public class Puesto {
 	}
 
 
-	public Puesto(String id, int numero, Vacunatorio idVac ) {
+	public Puesto(int id,  Vacunatorio idVac ) {
 		super();
 		this.id = id;
 		this.vacunatorio = idVac;
-		this.numeroVacunadores= numero;
-		this.vacunadoresAsignadosPorFecha = new HashMap<LocalDate,Puesto_Vacunador>();
+		this.vacunadorAsignadoPorFecha = new HashMap<LocalDate,Puesto_Vacunador>();
 	}
 
-
-	public String getId() {
+	
+	public int getId() {
 		return id;
 	}
 
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
 
-	public int getNumeroVacunadores() {
-		return numeroVacunadores;
-	}
-
-
-	public void setNumeroVacunadores(int numeroVacunadores) {
-		this.numeroVacunadores = numeroVacunadores;
-	}
-
-	
 	public Vacunatorio getVacunatorio() {
 		return vacunatorio;
 	}
@@ -60,18 +48,21 @@ public class Puesto {
 	}
 
 
-	public Map<LocalDate, Puesto_Vacunador> getVacunadoresAsignadosPorFecha() {
-		return vacunadoresAsignadosPorFecha;
+	
+
+
+	public Map<LocalDate, Puesto_Vacunador> getVacunadorAsignadoPorFecha() {
+		return vacunadorAsignadoPorFecha;
 	}
 
 
-	public void setVacunadoresAsignadosPorFecha(Map<LocalDate, Puesto_Vacunador> vacunadoresAsignadosPorFecha) {
-		this.vacunadoresAsignadosPorFecha = vacunadoresAsignadosPorFecha;
+	public void setVacunadorAsignadoPorFecha(Map<LocalDate, Puesto_Vacunador> vacunadorAsignadoPorFecha) {
+		this.vacunadorAsignadoPorFecha = vacunadorAsignadoPorFecha;
 	}
 
 
 	public void agregarPuestoVacunador (Puesto_Vacunador pv) {
-		vacunadoresAsignadosPorFecha.put(pv.getFecha(), pv);
+		vacunadorAsignadoPorFecha.put(pv.getFecha(), pv);
 	}
 
 

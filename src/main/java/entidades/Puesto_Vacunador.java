@@ -1,25 +1,22 @@
 package entidades;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class Puesto_Vacunador {
 	private LocalDate fecha;
 	private Puesto puesto;
-	private List<Vacunador> vacunadores;
-	private int codigoVacunatorio;
+	private Vacunador vacunador;
 	
 	public Puesto_Vacunador() {
 		
 	}
 
-	public Puesto_Vacunador(LocalDate fecha,int codigoVacunatorio, Puesto puesto) {
+	public Puesto_Vacunador(LocalDate fecha, Puesto puesto) {
 		super();
 		this.fecha = fecha;
-		this.codigoVacunatorio= codigoVacunatorio;
 		this.puesto = puesto;
-		this.vacunadores = new ArrayList<Vacunador>();
+		this.vacunador = new Vacunador();
 	}
 
 	public LocalDate getFecha() {
@@ -38,25 +35,15 @@ public class Puesto_Vacunador {
 		this.puesto = puesto;
 	}
 
-	public int getCodigoVacunatorio() {
-		return codigoVacunatorio;
+	public Vacunador getVacunador() {
+		return vacunador;
 	}
 
-	public void setCodigoVacunatorio(int codigoVacunatorio) {
-		this.codigoVacunatorio = codigoVacunatorio;
+	public void setVacunador(Vacunador vacunador) {
+		this.vacunador = vacunador;
 	}
 
-	public List<Vacunador> getVacunadores() {
-		return vacunadores;
-	}
 
-	public void setVacunadores(List<Vacunador> vacunadores) {
-		this.vacunadores = vacunadores;
-	}
-	
-	public void agregarVacunador(Vacunador vac) {
-		this.vacunadores.add(vac);
-	}
 
 	
 	

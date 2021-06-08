@@ -8,6 +8,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import Manejador.ManejadorVacunatoriosLocal;
+import dataTypes.DTMsjVacunatorio;
 
 @WebService
 public class VacunatorioServicio {
@@ -16,14 +17,12 @@ public class VacunatorioServicio {
 	private ManejadorVacunatoriosLocal manejador;
 	
 	@WebMethod
-	public String asignarVacunadores(String fecha, String idVac, List<Integer> cedulas) throws Exception {
+	public DTMsjVacunatorio asignarVacunadores(String fecha, String idVac, List<Integer> cedulas)  {
 		
-		try {
-		manejador.asignarVacunadores(fecha, idVac, cedulas);
-			return "Vacunadores asignados correctamente";
-		} catch (Exception e) {
-			return("Error: "+e.getMessage());
-		}
+		DTMsjVacunatorio mensaje = manejador.asignarVacunadores(fecha, idVac, cedulas);
+		return mensaje;
+			
+		
 	}
 	
 	@WebMethod
