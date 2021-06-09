@@ -1,3 +1,4 @@
+dataTypes\DTInformacionVacunador.class
 dataTypes\DTMsjVacunatorio.class
 entidades\Puesto_Vacunador.class
 webServiceSoap\VacunatorioServicio.class

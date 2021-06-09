@@ -8,6 +8,7 @@ import javax.jws.WebMethod;
 import javax.jws.WebService;
 
 import Manejador.ManejadorVacunatoriosLocal;
+import dataTypes.DTInformacionVacunador;
 import dataTypes.DTMsjVacunatorio;
 
 @WebService
@@ -28,6 +29,18 @@ public class VacunatorioServicio {
 	@WebMethod
 	public List<Integer> listarVacunatorios (){
 		return manejador.listarVacunatorios();
+	}
+	
+	@WebMethod
+	public List<DTInformacionVacunador> consultarLugarVacunador (String idVac, int cedula) {
+		return manejador.consultarLugarVacunador(idVac, cedula);
+		
+	}
+	
+	@WebMethod
+	public List<Integer> consultarVacunadoresPuestosVacXFecha (String idVac,String fecha) {
+		return manejador.consultarVacunadoresPuestosVacXFecha(idVac, fecha);
+		
 	}
 
 }

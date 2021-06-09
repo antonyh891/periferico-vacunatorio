@@ -10,6 +10,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.LocalBean;
 import javax.ejb.Singleton;
 
+import dataTypes.DTInformacionVacunador;
 import dataTypes.DTMsjVacunatorio;
 import entidades.Puesto;
 import entidades.Puesto_Vacunador;
@@ -33,7 +34,6 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
     @PostConstruct
     public void init() {
     	iniciarVacunatorios();
-    	iniciarPuestos();
     	iniciarPuestoVacunador();
     	
     }
@@ -109,17 +109,55 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		 }
 		return cedulasRebotadas;
 	 }
+	
+	@Override
+	public List<Integer> listarVacunatorios() {
+		List<Integer> listavacunatorios = new ArrayList<Integer>();
+		for (Map.Entry<String, Vacunatorio> p : vacunatorios.entrySet()) {
+			listavacunatorios.add(Integer.parseInt(p.getValue().getId()));
+		}
+		return listavacunatorios;
+	}
 				
 
 	private void iniciarPuestoVacunador() {
 		puestoVacunador = new HashMap<String,Puesto_Vacunador>();
 		 
 	}
-
-	private void iniciarPuestos() {
-		// TODO Auto-generated method stub
+	
+	@Override
+	public List<DTInformacionVacunador> consultarLugarVacunador (String idVac, int cedula) {
+		Vacunatorio v = this.vacunatorios.get(idVac);
+		if(v != null) {
+			List<DTInformacionVacunador> informacion = new ArrayList<DTInformacionVacunador>();
+		
+			for (Map.Entry<String, Puesto_Vacunador> p : puestoVacunador.entrySet()) {
+				if(cedula == p.getValue().getVacunador().getCi() && idVac.equals( p.getValue().getPuesto().getVacunatorio().getId() )){
+					DTInformacionVacunador info = new DTInformacionVacunador (p.getValue().getFecha().toString(), p.getValue().getPuesto().getId()); 
+					informacion.add(info);
+				}
+			}
+			return informacion;
+		}else return null;
+	}
+	
+	@Override
+	public List<Integer> consultarVacunadoresPuestosVacXFecha(String idVac, String fecha) {
+		Vacunatorio v = this.vacunatorios.get(idVac);
+		
+		if(v != null) {
+			List<Integer> listaVacunadores = new ArrayList<Integer>();
+			for (Puesto p: v.getPuestos()) {
+				if (p.getVacunadorAsignadoPorFecha().containsKey(LocalDate.parse(fecha))) {
+					listaVacunadores.add(p.getVacunadorAsignadoPorFecha().get(LocalDate.parse(fecha)).getVacunador().getCi());
+				}
+					
+			}
+			return listaVacunadores;
+		}else return null;
 		
 	}
+	
 
 	private void iniciarVacunatorios() {
 		vacunatorios = new HashMap<String,Vacunatorio>();
@@ -208,14 +246,9 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		
 	}
 
-	@Override
-	public List<Integer> listarVacunatorios() {
-		List<Integer> listavacunatorios = new ArrayList<Integer>();
-		for (Map.Entry<String, Vacunatorio> p : vacunatorios.entrySet()) {
-			listavacunatorios.add(Integer.parseInt(p.getValue().getId()));
-		}
-		return listavacunatorios;
-	}
+	
+
+	
 
 }
 
