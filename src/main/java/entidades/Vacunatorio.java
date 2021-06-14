@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Vacunatorio {
 	
-	private String id;
+	private int id;
 	private List<Puesto> puestos = new ArrayList<>();
 	
 	
@@ -19,7 +19,7 @@ public class Vacunatorio {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Vacunatorio(String id) {
+	public Vacunatorio(int id) {
 		super();
 		this.id = id;
 		
@@ -31,13 +31,13 @@ public class Vacunatorio {
 
 
 
-	public String getId() {
+	public int getId() {
 		return id;
 	}
 
 
 
-	public void setId(String id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 

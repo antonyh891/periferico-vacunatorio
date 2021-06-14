@@ -24,7 +24,7 @@ import entidades.Vacunatorio;
 @LocalBean
 public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 
-	private Map<String,Vacunatorio> vacunatorios;
+	private Map<Integer,Vacunatorio> vacunatorios;
 	private Map<String,Puesto_Vacunador> puestoVacunador;
 	
     public ManejadorVacunatorios() {
@@ -39,63 +39,31 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
     }
 	
 	@Override
-	public DTMsjVacunatorio asignarVacunadores (String fecha, String idVac, List<Integer> cedulas)  {
+	public void asignarVacunadores (String fecha, int idVac, List<Integer> cedulas)  {
 		Vacunatorio v = this.vacunatorios.get(idVac);
-		String mensaje="";
-		DTMsjVacunatorio mensajeVac= new DTMsjVacunatorio() ;
 		if (v!=null) {
-			List<Integer> cedulasRebotadas = consultarDisponiblidadFechaVacunadores(cedulas, fecha);
-			cedulas.removeAll(cedulasRebotadas);
 			List<Puesto> puestos = v.getPuestos();
 		if (cedulas!= null) {
 			int canVacunadores = cedulas.size();
 			int i= 0;
-			 List<Integer> cedulasAux = new ArrayList<Integer>(cedulas);
 			for (Puesto p : puestos) {
-				Puesto_Vacunador pv = p.getVacunadorAsignadoPorFecha().get(LocalDate.parse(fecha));
-					if (pv == null && (canVacunadores>0)) {
+					if (canVacunadores>0) {
 						
-							pv = new Puesto_Vacunador(LocalDate.parse(fecha),p);
+						Puesto_Vacunador pv = new Puesto_Vacunador(LocalDate.parse(fecha),p);
 							puestoVacunador.put(Integer.toString(puestoVacunador.size()+1), pv);	
-								Vacunador vac = new Vacunador(Integer.valueOf(cedulasAux.get(i)));
+								Vacunador vac = new Vacunador(Integer.valueOf(cedulas.get(i)));
 								pv.setVacunador(vac);
 								p.agregarPuestoVacunador(pv);
-								cedulas.remove(cedulasAux.get(i));
 								i++;
 								canVacunadores--;
-					 }else if (canVacunadores==0) break;
-																						 
-			 }
 					 
-			
-				if (canVacunadores!= 0 && !cedulasRebotadas.isEmpty()) {
-					cedulas.addAll(cedulasRebotadas);
-					mensaje= "En la fecha seleccionada,el vacunatorio no tiene mas lugar para los siguientes vacunadores: ";
-					mensajeVac.setMensaje(mensaje);
-					mensajeVac.setVacunadoresNoAsignados(cedulas);
-				} 
-				else if(canVacunadores!=0) {
-					mensaje= "En la fecha seleccionada, el vacunatorio no tiene mas lugar para los siguientes vacunadores: ";
-					mensajeVac.setMensaje(mensaje);
-					mensajeVac.setVacunadoresNoAsignados(cedulas);
-					
-				}else if(!cedulasRebotadas.isEmpty()) {
-					mensaje= "Los siguientes vacunadores ya tienen un lugar asignado para la fecha ingresada: ";
-					mensajeVac.setMensaje(mensaje);
-					mensajeVac.setVacunadoresNoAsignados(cedulasRebotadas);
-						}
-					
-		         else {
-		        	 	mensaje= "Vacunadores asignados correctamente";
-						mensajeVac.setMensaje(mensaje);
-		         }
-			} 
+					}																	 
+			 }
+		}
 		
-	}else {
-		mensaje=" No se encontro un Vacunatorio con el id especificado";
-		mensajeVac.setMensaje(mensaje);
-		  }
-		return mensajeVac;
+					 
+		}		
+				
 	}
 	
 	private List<Integer> consultarDisponiblidadFechaVacunadores(List<Integer> cedulas, String fecha) {
@@ -113,8 +81,8 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 	@Override
 	public List<Integer> listarVacunatorios() {
 		List<Integer> listavacunatorios = new ArrayList<Integer>();
-		for (Map.Entry<String, Vacunatorio> p : vacunatorios.entrySet()) {
-			listavacunatorios.add(Integer.parseInt(p.getValue().getId()));
+		for (Map.Entry<Integer, Vacunatorio> p : vacunatorios.entrySet()) {
+			listavacunatorios.add(p.getValue().getId());
 		}
 		return listavacunatorios;
 	}
@@ -142,52 +110,46 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 	}
 	
 	@Override
-	public List<Integer> consultarVacunadoresPuestosVacXFecha(String idVac, String fecha) {
+	public Integer consultarVacunadorPuestoXFecha(int idVac, String fecha, int cedula) {
 		Vacunatorio v = this.vacunatorios.get(idVac);
 		
 		if(v != null) {
-			List<Integer> listaVacunadores = new ArrayList<Integer>();
 			for (Puesto p: v.getPuestos()) {
 				if (p.getVacunadorAsignadoPorFecha().containsKey(LocalDate.parse(fecha))) {
-					listaVacunadores.add(p.getVacunadorAsignadoPorFecha().get(LocalDate.parse(fecha)).getVacunador().getCi());
+					if(p.getVacunadorAsignadoPorFecha().get((LocalDate.parse(fecha))).getVacunador().getCi() == cedula){
+					return p.getId();
+					}
 				}
 					
 			}
-			return listaVacunadores;
-		}else return null;
+		}
+		return 0;
+		
 		
 	}
 	
 
 	private void iniciarVacunatorios() {
-		vacunatorios = new HashMap<String,Vacunatorio>();
+		vacunatorios = new HashMap<Integer,Vacunatorio>();
 		
-		Vacunatorio v1 = new Vacunatorio("hfx10");
+		Vacunatorio v1 = new Vacunatorio(1);
 		Puesto p1 = new Puesto(1,v1);
 		Puesto p2 = new Puesto(2,v1);
 		Puesto p3 = new Puesto(3,v1);
-		Puesto p4 = new Puesto(4,v1);
-		Puesto p5 = new Puesto(5,v1);
 		List<Puesto> puestos = new ArrayList<Puesto>();
 		puestos.add(p1);
 		puestos.add(p2);
 		puestos.add(p3);
-		puestos.add(p4);
-		puestos.add(p5);
 		v1.setPuestos(puestos);
 		vacunatorios.put(v1.getId(), v1);
 		
-		Vacunatorio v2 = new Vacunatorio("hfx08");
+		Vacunatorio v2 = new Vacunatorio(2);
 		Puesto p6 = new Puesto(1,v2);
 		Puesto p7 = new Puesto(2,v2);
 		Puesto p8 = new Puesto(3,v2);
 		Puesto p9 = new Puesto(4,v2);
 		Puesto p20 = new Puesto(5,v2);
 		Puesto p21 = new Puesto(6,v2);
-		Puesto p22 = new Puesto(7,v2);
-		Puesto p23 = new Puesto(8,v2);
-		Puesto p24 = new Puesto(9,v2);
-		Puesto p25 = new Puesto(10,v2);
 		List<Puesto> puestos2 = new ArrayList<Puesto>();
 		puestos2.add(p6);
 		puestos2.add(p7);
@@ -195,31 +157,25 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		puestos2.add(p9);
 		puestos2.add(p20);
 		puestos2.add(p21);
-		puestos2.add(p22);
-		puestos2.add(p23);
-		puestos2.add(p24);
-		puestos2.add(p25);
 		v2.setPuestos(puestos2);
 		vacunatorios.put(v2.getId(), v2);
 		
-		Vacunatorio v3 = new Vacunatorio("hfx09");
+		Vacunatorio v3 = new Vacunatorio(3);
 		Puesto p10 = new Puesto(1,v3);
 		Puesto p12 = new Puesto(2,v3);
 		Puesto p13 = new Puesto(3,v3);
 		Puesto p14 = new Puesto(4,v3);
 		Puesto p15 = new Puesto(5,v3);
-		Puesto p19 = new Puesto(6,v3);
 		List<Puesto> puestos3 = new ArrayList<Puesto>();
 		puestos3.add(p10);
 		puestos3.add(p12);
 		puestos3.add(p13);
 		puestos3.add(p14);
 		puestos3.add(p15);
-		puestos3.add(p19);
 		v3.setPuestos(puestos3);
 		vacunatorios.put(v3.getId(), v3);
 		
-		Vacunatorio v4 = new Vacunatorio("hfx11");
+		Vacunatorio v4 = new Vacunatorio(4);
 		Puesto p26 = new Puesto(1,v4);
 		Puesto p27 = new Puesto(2,v4);
 		Puesto p28 = new Puesto(3,v4);

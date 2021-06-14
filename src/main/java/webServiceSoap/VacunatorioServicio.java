@@ -18,10 +18,10 @@ public class VacunatorioServicio {
 	private ManejadorVacunatoriosLocal manejador;
 	
 	@WebMethod
-	public DTMsjVacunatorio asignarVacunadores(String fecha, String idVac, List<Integer> cedulas)  {
+	public void asignarVacunadores(String fecha, int idVac, List<Integer> cedulas)  {
 		
-		DTMsjVacunatorio mensaje = manejador.asignarVacunadores(fecha, idVac, cedulas);
-		return mensaje;
+		manejador.asignarVacunadores(fecha, idVac, cedulas);
+		
 			
 		
 	}
@@ -31,15 +31,11 @@ public class VacunatorioServicio {
 		return manejador.listarVacunatorios();
 	}
 	
-	@WebMethod
-	public List<DTInformacionVacunador> consultarLugarVacunador (String idVac, int cedula) {
-		return manejador.consultarLugarVacunador(idVac, cedula);
-		
-	}
+	
 	
 	@WebMethod
-	public List<Integer> consultarVacunadoresPuestosVacXFecha (String idVac,String fecha) {
-		return manejador.consultarVacunadoresPuestosVacXFecha(idVac, fecha);
+	public Integer consultarVacunadorPuestoXFecha (String fecha, int idVac,int cedula ) {
+		return manejador.consultarVacunadorPuestoXFecha(idVac, fecha, cedula);
 		
 	}
 
