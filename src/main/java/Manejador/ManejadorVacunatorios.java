@@ -12,10 +12,9 @@ import javax.ejb.Singleton;
 
 import dataTypes.DTInformacionVacunador;
 import dataTypes.DTMsjVacunatorio;
-import entidades.Puesto;
 import entidades.Puesto_Vacunador;
 import entidades.Vacunador;
-import entidades.Vacunatorio;
+
 
 /**
  * Session Bean implementation class ManejadorVacunatorios
@@ -24,8 +23,8 @@ import entidades.Vacunatorio;
 @LocalBean
 public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 
-	private Map<Integer,Vacunatorio> vacunatorios;
-	private Map<String,Puesto_Vacunador> puestoVacunador;
+	
+	private Map<LocalDate,List<Puesto_Vacunador>> puestoVacunador;
 	
     public ManejadorVacunatorios() {
         // TODO Auto-generated constructor stub
@@ -33,51 +32,34 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
     
     @PostConstruct
     public void init() {
-    	iniciarVacunatorios();
+    	//iniciarVacunatorios();
     	iniciarPuestoVacunador();
     	
     }
 	
 	@Override
-	public void asignarVacunadores (String fecha, int idVac, List<Integer> cedulas)  {
-		Vacunatorio v = this.vacunatorios.get(idVac);
-		if (v!=null) {
-			List<Puesto> puestos = v.getPuestos();
+	public Boolean asignarVacunadores (String fecha, List<Integer> cedulas)  {
+		
 		if (cedulas!= null) {
-			int canVacunadores = cedulas.size();
-			int i= 0;
-			for (Puesto p : puestos) {
-					if (canVacunadores>0) {
+			int posicion= 1;
+			List<Puesto_Vacunador> puestosAsignados = new ArrayList<Puesto_Vacunador>();
+				for (Integer i : cedulas) {
 						
-						Puesto_Vacunador pv = new Puesto_Vacunador(LocalDate.parse(fecha),p);
-							puestoVacunador.put(Integer.toString(puestoVacunador.size()+1), pv);	
-								Vacunador vac = new Vacunador(Integer.valueOf(cedulas.get(i)));
-								pv.setVacunador(vac);
-								p.agregarPuestoVacunador(pv);
-								i++;
-								canVacunadores--;
-					 
-					}																	 
+						Puesto_Vacunador pv = new Puesto_Vacunador(LocalDate.parse(fecha),posicion);	
+						Vacunador vac = new Vacunador(i.intValue());
+						pv.setVacunador(vac);
+						puestosAsignados.add(pv);
+						posicion++;
+				}
+				puestoVacunador.put(LocalDate.parse(fecha), puestosAsignados);
+				return true;
 			 }
+			return false;
 		}
 		
-					 
-		}		
-				
-	}
 	
-	private List<Integer> consultarDisponiblidadFechaVacunadores(List<Integer> cedulas, String fecha) {
-		List<Integer> cedulasRebotadas = new ArrayList<Integer>();
-		for (Map.Entry<String, Puesto_Vacunador> p : puestoVacunador.entrySet()) {
-			if(LocalDate.parse(fecha).equals(p.getValue().getFecha()) && cedulas.contains(p.getValue().getVacunador().getCi())) {
-						
-				cedulasRebotadas.add(p.getValue().getVacunador().getCi());
-								
-			 }
-		 }
-		return cedulasRebotadas;
-	 }
 	
+	/*
 	@Override
 	public List<Integer> listarVacunatorios() {
 		List<Integer> listavacunatorios = new ArrayList<Integer>();
@@ -86,13 +68,13 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		}
 		return listavacunatorios;
 	}
-				
+	*/			
 
 	private void iniciarPuestoVacunador() {
-		puestoVacunador = new HashMap<String,Puesto_Vacunador>();
+		puestoVacunador = new HashMap<LocalDate,List<Puesto_Vacunador>>();
 		 
 	}
-	
+	/*
 	@Override
 	public List<DTInformacionVacunador> consultarLugarVacunador (String idVac, int cedula) {
 		Vacunatorio v = this.vacunatorios.get(idVac);
@@ -108,19 +90,20 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 			return informacion;
 		}else return null;
 	}
+*/
 	
 	@Override
-	public Integer consultarVacunadorPuestoXFecha(int idVac, String fecha, int cedula) {
-		Vacunatorio v = this.vacunatorios.get(idVac);
+	public Integer consultarVacunadorPuestoXFecha(String fecha, int cedula) {
 		
-		if(v != null) {
-			for (Puesto p: v.getPuestos()) {
-				if (p.getVacunadorAsignadoPorFecha().containsKey(LocalDate.parse(fecha))) {
-					if(p.getVacunadorAsignadoPorFecha().get((LocalDate.parse(fecha))).getVacunador().getCi() == cedula){
-					return p.getId();
-					}
+		List<Puesto_Vacunador> puestos = puestoVacunador.get(LocalDate.parse(fecha));
+		
+		if(puestos!= null) {
+			
+		
+			for (Puesto_Vacunador p : puestos) {
+				if (p.getVacunador().getCi() == cedula) {
+					return p.getPuesto();
 				}
-					
 			}
 		}
 		return 0;
@@ -128,7 +111,7 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		
 	}
 	
-
+/*
 	private void iniciarVacunatorios() {
 		vacunatorios = new HashMap<Integer,Vacunatorio>();
 		
@@ -202,7 +185,7 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 		
 	}
 
-	
+	*/
 
 	
 

@@ -5,14 +5,14 @@ import java.time.LocalDate;
 
 public class Puesto_Vacunador {
 	private LocalDate fecha;
-	private Puesto puesto;
+	private int puesto;
 	private Vacunador vacunador;
 	
 	public Puesto_Vacunador() {
 		
 	}
 
-	public Puesto_Vacunador(LocalDate fecha, Puesto puesto) {
+	public Puesto_Vacunador(LocalDate fecha, int puesto) {
 		super();
 		this.fecha = fecha;
 		this.puesto = puesto;
@@ -27,11 +27,11 @@ public class Puesto_Vacunador {
 		this.fecha = fecha;
 	}
 
-	public Puesto getPuesto() {
+	public int getPuesto() {
 		return puesto;
 	}
 
-	public void setPuesto(Puesto puesto) {
+	public void setPuesto(int puesto) {
 		this.puesto = puesto;
 	}
 

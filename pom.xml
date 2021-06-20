@@ -180,13 +180,25 @@
             <scope>provided</scope>
         </dependency>
         
-     
-            
-            <dependency>
-    <groupId>javax.jws</groupId>
-    <artifactId>javax.jws-api</artifactId>
-    <version>1.1</version>
-</dependency>
+	<dependency>
+		<groupId>javax.ws.rs</groupId>
+		<artifactId>javax.ws.rs-api</artifactId>
+		<version>2.1.1</version>
+	</dependency>
+
+	<!-- https://mvnrepository.com/artifact/com.sun.xml.ws/jaxws-rt -->
+	<dependency>
+		<groupId>com.sun.xml.ws</groupId>
+		<artifactId>jaxws-rt</artifactId>
+		<version>2.3.3</version>
+	</dependency>
+
+
+	<dependency>
+		<groupId>javax.jws</groupId>
+		<artifactId>javax.jws-api</artifactId>
+		<version>1.1</version>
+	</dependency>
     </dependencies>
 	
     <build>
@@ -221,6 +233,19 @@
                 <artifactId>wildfly-maven-plugin</artifactId>
                 <version>${version.wildfly.maven.plugin}</version>
             </plugin>
+            <plugin>
+	<groupId>org.codehaus.mojo</groupId>
+	<artifactId>jaxws-maven-plugin</artifactId>
+	<version>2.6</version>
+	<configuration>
+		<xdebug>true</xdebug>
+		<sourceDestDir>src/main/java</sourceDestDir>
+		<wsdlUrls>
+			<wsdlUrl>http://localhost:8080/comp-cent-web/EnviosSOAP?Wsdl</wsdlUrl>
+		</wsdlUrls>
+	</configuration>
+
+</plugin>
         </plugins>
     </build>
 
@@ -305,6 +330,7 @@
                             </systemPropertyVariables>
                         </configuration>
                     </plugin>
+							
                 </plugins>
             </build>
         </profile>
