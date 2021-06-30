@@ -9,10 +9,10 @@ import dataTypes.DTInformacionVacunador;
 @Local
 public interface ManejadorVacunatoriosLocal {
 
-	public Boolean asignarVacunadores(String fecha, List<Integer> cedulas) ;
+	public Boolean asignarVacunadores(List<Integer> cedulas) ;
 	
 
-	public Integer consultarVacunadorPuestoXFecha(String fecha, int cedula);
+	public Integer consultarVacunadorPuesto(int cedula);
 
 
 }

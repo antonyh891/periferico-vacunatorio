@@ -16,7 +16,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import Manejador.ManejadorVacunatoriosLocal;
-import dataTypes.DTAsignarVacunadores;
 
 @RequestScoped
 @Path("/vacunatorio")
@@ -33,9 +32,9 @@ public class VacunatorioRest {
 	
 	@POST
 	@Path("/asignarVacunadores")
-	public Response asignarVacunadores(DTAsignarVacunadores vac)  {
+	public Response asignarVacunadores(List<Integer> cedulas)  {
 		
-		Boolean valor = manejador.asignarVacunadores(vac.getFecha(), vac.getCedulas());
+		Boolean valor = manejador.asignarVacunadores(cedulas);
 			
 		return Response
           		 .status(Response.Status.OK)
@@ -45,8 +44,8 @@ public class VacunatorioRest {
 	
 	@GET
 	@Path("/obtenerPuesto")
-	public Response consultarVacunadorPuestoXFecha (@QueryParam("fecha") String fecha,@QueryParam("cedula") int cedula ) {
-		Integer puesto = manejador.consultarVacunadorPuestoXFecha(fecha, cedula);
+	public Response consultarVacunadorPuestoXFecha (@QueryParam("cedula") int cedula ) {
+		Integer puesto = manejador.consultarVacunadorPuesto(cedula);
 		return Response
          		 .status(Response.Status.OK)
          		 .entity(puesto)
