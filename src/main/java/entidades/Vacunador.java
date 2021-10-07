@@ -2,6 +2,8 @@ package entidades;
 
 
 
+
+
 public class Vacunador {
 	private int ci;
 	
