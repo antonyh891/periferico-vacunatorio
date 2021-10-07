@@ -42,7 +42,7 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
 	
 	long id = 1; 
 	private List<Puesto_Vacunador> puestoVacunador;
-	LocalDate fechaInicio = LocalDate.of(2021, 06, 14);
+	LocalDate fechaInicio = LocalDate.of(2020, 12, 30);
     public ManejadorVacunatorios() {
         // TODO Auto-generated constructor stub
     }
@@ -106,7 +106,7 @@ public class ManejadorVacunatorios implements ManejadorVacunatoriosLocal {
     	timerService.createTimer(interval, "Seteando timer");
     }
    
-    @Schedule(second="59", minute="*/3", hour="0-23", dayOfWeek="*", month="*", year="*", info="TimerSocioLogistico")
+    @Schedule(second="59", minute="*/1", hour="0-23", dayOfWeek="*", month="*", year="*", info="TimerSocioLogistico")
     private void consultarAgenda(final Timer t) {
     	fechaInicio = fechaInicio.plusDays(1);
     	// Cliente para la conexión
